@@ -1,0 +1,21 @@
+const memoize = (fn) => {
+	let cacheData = {}
+  return (...args) => {
+  	const argsToString = JSON.stringify(args)
+    if (argsToString in cacheData) {
+    	console.log(`Getting data from cache for key ${argsToString}`)
+    	return cacheData[argsToString]
+    } else {
+    	const result = fn.apply(this, args)
+      console.log(`Computing value and caching for key ${argsToString}`)
+      cacheData[argsToString] = result
+      return result
+    }
+  }
+}
+
+const addThreeNums = (a, b, c) => a+b+c
+const memoisedAdd = memoize(addThreeNums)
+
+console.log(memoisedAdd(1,2,3))
+console.log(memoisedAdd(1,2,3))
